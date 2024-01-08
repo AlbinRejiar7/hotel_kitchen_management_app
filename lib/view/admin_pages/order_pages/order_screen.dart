@@ -116,91 +116,87 @@ class _OrderPageState extends State<OrderPage> {
             }).toList();
 
             return orders.isNotEmpty
-                ? Flexible(
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) => Divider(),
-                      itemCount: orders.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        orders.sort((a, b) => b.createdAt!
-                            .compareTo(a.createdAt ?? Timestamp.now()));
-                        final reversedIndex = orders.length - 1 - index;
-                        return Container(
-                          padding: EdgeInsets.all(10),
-                          color: getOrderStatusColor(
-                              orders[index].orderStatus!.trim().toLowerCase()),
-                          child: Column(
-                            children: [
-                              Row(
+                ? ListView.separated(
+                    separatorBuilder: (context, index) => Divider(),
+                    itemCount: orders.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      orders.sort((a, b) => b.createdAt!
+                          .compareTo(a.createdAt ?? Timestamp.now()));
+                      final reversedIndex = orders.length - 1 - index;
+                      return Container(
+                        padding: EdgeInsets.all(10),
+                        color: getOrderStatusColor(
+                            orders[index].orderStatus!.trim().toLowerCase()),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text("Order Status"),
+                                kWidth(10),
+                                Text(orders[index].orderStatus ?? ""),
+                              ],
+                            ),
+                            ListTile(
+                              leading: Text(
+                                "${reversedIndex + 1}",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              title: Text(orders[index].dishName ?? ""),
+                              subtitle: Text(
+                                  orders[index].createdAt!.toDate().toString()),
+                              trailing: Column(
                                 children: [
-                                  Text("Order Status"),
-                                  kWidth(10),
-                                  Text(orders[index].orderStatus ?? ""),
+                                  Text(
+                                    "qunatity x${orders[index].quantity}",
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  Flexible(
+                                      child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                          tooltip: "ASSIGN ORDER TO CHEF",
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                SlidePageRoute(
+                                                    page: ChoosechefPage(
+                                                  itemName:
+                                                      orders[index].dishName ??
+                                                          "",
+                                                  oderId:
+                                                      orders[index].orderId ??
+                                                          "",
+                                                  quantity:
+                                                      orders[index].quantity ??
+                                                          "",
+                                                )));
+                                          },
+                                          icon: Icon(Icons.send)),
+                                      IconButton(
+                                          onPressed: () async {
+                                            await savePdfToMobile(
+                                              orders[index].dishName ?? "",
+                                              orders[index].quantity ?? "",
+                                              orders[index]
+                                                  .createdAt
+                                                  .toString(),
+                                            );
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        "Successfully saved to your storage")));
+                                          },
+                                          icon: Icon(Icons.print))
+                                    ],
+                                  ))
                                 ],
                               ),
-                              ListTile(
-                                leading: Text(
-                                  "${reversedIndex + 1}",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                title: Text(orders[index].dishName ?? ""),
-                                subtitle: Text(orders[index]
-                                    .createdAt!
-                                    .toDate()
-                                    .toString()),
-                                trailing: Column(
-                                  children: [
-                                    Text(
-                                      "qunatity x${orders[index].quantity}",
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                    Flexible(
-                                        child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        IconButton(
-                                            tooltip: "ASSIGN ORDER TO CHEF",
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  SlidePageRoute(
-                                                      page: ChoosechefPage(
-                                                    itemName: orders[index]
-                                                            .dishName ??
-                                                        "",
-                                                    oderId:
-                                                        orders[index].orderId ??
-                                                            "",
-                                                    quantity: orders[index]
-                                                            .quantity ??
-                                                        "",
-                                                  )));
-                                            },
-                                            icon: Icon(Icons.send)),
-                                        IconButton(
-                                            onPressed: () async {
-                                              await savePdfToMobile(
-                                                orders[index].dishName ?? "",
-                                                orders[index].quantity ?? "",
-                                                orders[index]
-                                                    .createdAt
-                                                    .toString(),
-                                              );
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                      content: Text(
-                                                          "Successfully saved to your storage")));
-                                            },
-                                            icon: Icon(Icons.print))
-                                      ],
-                                    ))
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   )
                 : EmptyScreen(text: "Orders");
           } else {
