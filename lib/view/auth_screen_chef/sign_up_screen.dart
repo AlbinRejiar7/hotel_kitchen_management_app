@@ -210,9 +210,7 @@ class _SignUpPageChefState extends State<SignUpPageChef> {
           "id": uid,
           "name": usernameContoller.text,
           "email": emailController.text.toLowerCase(),
-          "isStarted": false,
-          "ready": false,
-          "createdAt": Timestamp.now()
+          "orders": [],
         });
 
         ScaffoldMessenger.of(context).showSnackBar(

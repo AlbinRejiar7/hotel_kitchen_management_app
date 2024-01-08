@@ -146,7 +146,6 @@ class MenuWidget extends StatelessWidget {
             children: [
               IconButton(
                   onPressed: () {
-                    print("object");
                     Navigator.push(
                         context,
                         SlidePageRoute(

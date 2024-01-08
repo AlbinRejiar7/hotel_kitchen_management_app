@@ -31,14 +31,14 @@ class _SigninPageAdminState extends State<SigninPageAdmin> {
       try {
         await authInstance.signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text);
-        Navigator.pushReplacement(
-            context, SlidePageRoute(page: AdminHomePage()));
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Logged In!'),
           ),
         );
         isloadingprovider.setLoading(false);
+        Navigator.of(context)
+            .pushReplacement(SlidePageRoute(page: AdminHomePage()));
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.message!)));
@@ -194,11 +194,7 @@ class _SigninPageAdminState extends State<SigninPageAdmin> {
                         child: isloadingprovider.isLoading
                             ? CircularProgressIndicator()
                             : CustomButton(
-                                onPressed: () => Navigator.pushReplacement(
-                                    context,
-                                    SlidePageRoute(
-                                        page:
-                                            AdminHomePage())), //submitForm(isloadingprovider),
+                                onPressed: () => submitForm(isloadingprovider),
                                 width: width * 0.3,
                                 buttonName: "Sign In",
                               ),

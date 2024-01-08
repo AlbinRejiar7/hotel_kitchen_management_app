@@ -7,7 +7,7 @@ import 'package:hotel_kitchen_management_app/controller/auth_controller/password
 import 'package:hotel_kitchen_management_app/controller/loading_controller.dart';
 import 'package:hotel_kitchen_management_app/utils/custom_sizedbox.dart';
 import 'package:hotel_kitchen_management_app/view/auth_screen_chef/sign_up_screen.dart';
-import 'package:hotel_kitchen_management_app/view/home_screen/home_screen.dart';
+import 'package:hotel_kitchen_management_app/view/chefs_pages/chef_home_page.dart';
 import 'package:hotel_kitchen_management_app/widgets/auth_widgets/custom_button.dart';
 import 'package:hotel_kitchen_management_app/widgets/auth_widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
@@ -31,13 +31,14 @@ class _SingInPageChefState extends State<SingInPageChef> {
       try {
         await authInstance.signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text);
-        Navigator.pushReplacement(context, SlidePageRoute(page: HomePage()));
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Logged In!'),
           ),
         );
         isloadingprovider.setLoading(false);
+        Navigator.of(context)
+            .pushReplacement(SlidePageRoute(page: ChefHomePage()));
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.message!)));
