@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_kitchen_management_app/constants/color_constants.dart';
@@ -31,14 +32,34 @@ class _SingInPageChefState extends State<SingInPageChef> {
       try {
         await authInstance.signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text);
+        final user = authInstance.currentUser;
+        final userId = user!.uid;
+        await FirebaseFirestore.instance
+            .collection("chefs")
+            .doc(userId)
+            .get()
+            .then((snapshot) {
+          if (snapshot["role"].toString() == "chef") {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) {
+                return ChefHomePage();
+              },
+            ));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('You are not Chef!'),
+              ),
+            );
+          }
+        });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Logged In!'),
           ),
         );
         isloadingprovider.setLoading(false);
-        Navigator.of(context)
-            .pushReplacement(SlidePageRoute(page: ChefHomePage()));
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.message!)));

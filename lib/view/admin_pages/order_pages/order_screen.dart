@@ -71,15 +71,12 @@ class _OrderPageState extends State<OrderPage> {
 
     final mobileDir = await getMobileDirectory();
     if (mobileDir == null) {
-      print('Error: Could not access mobile storage');
       return;
     }
 
     final file = File('${mobileDir.path}/my_pdf.pdf');
     await file.writeAsBytes(await pdf.save());
     OpenFile.open(file.path);
-
-    print('PDF saved to: ${file.path}');
   }
 
   @override

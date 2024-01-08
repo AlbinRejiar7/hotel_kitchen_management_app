@@ -41,12 +41,12 @@ class _ChefHomePageState extends State<ChefHomePage> {
                     },
                     icon: const Icon(Icons.cancel)),
                 IconButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SingInPageChef()));
-                      authInstance.signOut();
+                    onPressed: () async {
+                      await authInstance.signOut();
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => SingInPageChef(),
+                      ));
 
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Logout Successfull")));

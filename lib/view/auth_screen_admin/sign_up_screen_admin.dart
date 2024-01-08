@@ -210,7 +210,8 @@ class _SignUpPageAdminState extends State<SignUpPageAdmin> {
           "id": uid,
           "name": usernameContoller.text,
           "email": emailController.text,
-          "createdAt": Timestamp.now()
+          "createdAt": Timestamp.now(),
+          "role": "admin",
         });
 
         ScaffoldMessenger.of(context).showSnackBar(

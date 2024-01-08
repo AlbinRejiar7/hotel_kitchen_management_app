@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_kitchen_management_app/constants/color_constants.dart';
@@ -31,14 +32,31 @@ class _SigninPageAdminState extends State<SigninPageAdmin> {
       try {
         await authInstance.signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Logged In!'),
-          ),
-        );
-        isloadingprovider.setLoading(false);
-        Navigator.of(context)
-            .pushReplacement(SlidePageRoute(page: AdminHomePage()));
+        final user = authInstance.currentUser;
+        final userId = user!.uid;
+        await FirebaseFirestore.instance
+            .collection("admins")
+            .doc(userId)
+            .get()
+            .then((snapshot) {
+          if (snapshot["role"] == "admin") {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.of(context)
+                .pushReplacement(SlidePageRoute(page: AdminHomePage()));
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Logged In!'),
+              ),
+            );
+            isloadingprovider.setLoading(false);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('You are not Admin!'),
+              ),
+            );
+          }
+        });
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.message!)));

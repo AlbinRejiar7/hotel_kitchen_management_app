@@ -210,6 +210,7 @@ class _SignUpPageChefState extends State<SignUpPageChef> {
           "id": uid,
           "name": usernameContoller.text,
           "email": emailController.text.toLowerCase(),
+          "role": "chef",
           "orders": [],
         });
 

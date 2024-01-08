@@ -38,12 +38,13 @@ class AdminHomePage extends StatelessWidget {
                       },
                       icon: const Icon(Icons.cancel)),
                   IconButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SigninPageAdmin()));
-                        authInstance.signOut();
+                      onPressed: () async {
+                        await authInstance.signOut();
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => SigninPageAdmin(),
+                        ));
 
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

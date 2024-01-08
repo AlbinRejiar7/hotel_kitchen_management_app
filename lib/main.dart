@@ -42,15 +42,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          textTheme: GoogleFonts.metrophobicTextTheme(
-            Theme.of(context).textTheme,
-          ),
-          appBarTheme: AppBarTheme(backgroundColor: Colors.grey[300]),
-          scaffoldBackgroundColor: Colors.grey[300]),
-      home: SplashScreen(),
-    );
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            textTheme: GoogleFonts.metrophobicTextTheme(
+              Theme.of(context).textTheme,
+            ),
+            appBarTheme: AppBarTheme(backgroundColor: Colors.grey[300]),
+            scaffoldBackgroundColor: Colors.grey[300]),
+        home: SplashScreen());
   }
 }
 
@@ -67,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     var height = CustomeSize.customHeight(context);
     final FirebaseAuth authInstance = FirebaseAuth.instance;
-    var currentUser = authInstance.currentUser;
+    final currentUser = authInstance.currentUser;
     var textScale = CustomeSize.textScaleFactor(context);
     return Scaffold(
       body: Padding(
@@ -87,7 +86,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 onChanged: (String? newValue) {
                   setState(() {
                     selectedRole = newValue;
-                    print(selectedRole);
                   });
                 },
                 items: ['admin', 'chef'].map((role) {
@@ -105,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen> {
               selectedRole == 'admin'
                   ? CustomCardWidget(
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                             context,
                             SlidePageRoute(
                                 page: currentUser != null
@@ -122,7 +120,7 @@ class _SplashScreenState extends State<SplashScreen> {
               selectedRole == 'chef'
                   ? CustomCardWidget(
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                             context,
                             SlidePageRoute(
                                 page: currentUser != null
