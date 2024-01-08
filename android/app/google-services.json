@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "656081326376",
+    "project_id": "kitchen-management-app-1caf1",
+    "storage_bucket": "kitchen-management-app-1caf1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656081326376:android:5ee01fe74a3de3610dc01d",
+        "android_client_info": {
+          "package_name": "com.example.hotel_kitchen_management_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByB4xpxPYIyA4sDy5NaZ0_qSd1D3OqhkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
