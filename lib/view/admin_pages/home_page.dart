@@ -4,7 +4,7 @@ import 'package:hotel_kitchen_management_app/utils/page_navigation_animation_wid
 import 'package:hotel_kitchen_management_app/view/admin_pages/inventory_pages/inventory_screen.dart';
 import 'package:hotel_kitchen_management_app/view/admin_pages/menu_pages/menu_screen.dart';
 import 'package:hotel_kitchen_management_app/view/admin_pages/order_pages/order_screen.dart';
-import 'package:hotel_kitchen_management_app/view/auth_screen_admin/sign_in_screen_admin.dart';
+import 'package:hotel_kitchen_management_app/view/splash_screen.dart';
 import 'package:hotel_kitchen_management_app/widgets/custom_card_widget.dart';
 
 import '../../utils/mediaquery.dart';
@@ -43,7 +43,7 @@ class AdminHomePage extends StatelessWidget {
                         Navigator.of(context)
                             .popUntil((route) => route.isFirst);
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => SigninPageAdmin(),
+                          builder: (context) => SplashScreen(),
                         ));
 
                         ScaffoldMessenger.of(context).showSnackBar(

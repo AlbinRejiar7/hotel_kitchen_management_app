@@ -117,7 +117,7 @@ class _ItemOrderPageState extends State<ItemOrderPage> {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Order has been placed")));
-                    await sendNotificationToToken();
+                    await sendPushNotification();
                     dishNameContoller.clear();
                     qunatityController.clear();
                   } on FirebaseException catch (error) {
@@ -150,7 +150,7 @@ class _ItemOrderPageState extends State<ItemOrderPage> {
     super.dispose();
   }
 
-  Future<void> sendNotificationToToken() async {
+  Future<void> sendPushNotification() async {
     const String serverKey =
         'AAAAmMF-kSg:APA91bEsyP-zEL79p408ztUJRJDIsZ39sDh1pqzYkZQj75ey6gxzz4iSV0U6bXmNTjltE73J60sL3nuuijfm3jFrPfvmgtwoK_TY6oMO6MRE06htVI5W8U2d_FGMiSKvPXM62m7GdrD0';
     const String adminDeviceToken =

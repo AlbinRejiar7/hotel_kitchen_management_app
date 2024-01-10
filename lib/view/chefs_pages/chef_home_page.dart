@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hotel_kitchen_management_app/constants/color_constants.dart';
 import 'package:hotel_kitchen_management_app/controller/order_controller.dart';
 import 'package:hotel_kitchen_management_app/utils/custom_sizedbox.dart';
-import 'package:hotel_kitchen_management_app/view/auth_screen_chef/sign_in_screen.dart';
+import 'package:hotel_kitchen_management_app/view/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 class ChefHomePage extends StatefulWidget {
@@ -45,7 +45,7 @@ class _ChefHomePageState extends State<ChefHomePage> {
                       await authInstance.signOut();
                       Navigator.of(context).popUntil((route) => route.isFirst);
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => SingInPageChef(),
+                        builder: (context) => SplashScreen(),
                       ));
 
                       ScaffoldMessenger.of(context).showSnackBar(

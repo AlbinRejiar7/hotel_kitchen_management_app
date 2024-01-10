@@ -1,11 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-Future<void> handleBackGroundMessage(RemoteMessage message) async {
-  print("title2323 : ${message.notification?.title}");
-  print("title45 : ${message.notification?.body}");
-  print("title766 : ${message.data}");
-}
-
 class FirebaseApiService {
   final _firebaseMessaging = FirebaseMessaging.instance;
   Future<void> initNotifications() async {
@@ -22,6 +16,5 @@ class FirebaseApiService {
     } else {
       print('user Declined oru not accepted');
     }
-    FirebaseMessaging.onBackgroundMessage(handleBackGroundMessage);
   }
 }

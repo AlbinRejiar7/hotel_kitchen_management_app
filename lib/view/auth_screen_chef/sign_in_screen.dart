@@ -38,7 +38,7 @@ class _SingInPageChefState extends State<SingInPageChef> {
             .collection("chefs")
             .doc(userId)
             .get()
-            .then((snapshot) {
+            .then((snapshot) async {
           if (snapshot["role"].toString() == "chef") {
             Navigator.of(context).popUntil((route) => route.isFirst);
             Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -64,8 +64,9 @@ class _SingInPageChefState extends State<SingInPageChef> {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.message!)));
       } catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e as String)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                "YOU ARE TRYING TO ENTER INTO ADMIN WITH CHEF CREDENTIALS")));
       } finally {
         isloadingprovider.setLoading(false);
       }

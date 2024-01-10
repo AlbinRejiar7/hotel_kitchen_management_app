@@ -62,8 +62,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   ? CustomCardWidget(
                       onTap: () async {
                         if (currentUser == null) {
-                          Navigator.of(context).pushReplacement(
-                              SlidePageRoute(page: SigninPageAdmin()));
+                          Navigator.of(context)
+                              .push(SlidePageRoute(page: SigninPageAdmin()));
                         } else {
                           final user = authInstance.currentUser;
                           final userId = user!.uid;
@@ -86,12 +86,6 @@ class _SplashScreenState extends State<SplashScreen> {
                             }
                           });
                         }
-                        // Navigator.push(
-                        //     context,
-                        //     SlidePageRoute(
-                        //         page: currentUser != null
-                        //             ? AdminHomePage()
-                        //             : SigninPageAdmin()));
                       },
                       height: height,
                       textScale: textScale,
@@ -104,8 +98,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   ? CustomCardWidget(
                       onTap: () async {
                         if (currentUser == null) {
-                          Navigator.of(context).pushReplacement(
-                              SlidePageRoute(page: SingInPageChef()));
+                          Navigator.of(context)
+                              .push(SlidePageRoute(page: SingInPageChef()));
                         } else {
                           final user = authInstance.currentUser;
                           final userId = user!.uid;

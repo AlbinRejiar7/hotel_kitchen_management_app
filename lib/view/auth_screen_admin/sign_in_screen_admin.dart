@@ -38,7 +38,7 @@ class _SigninPageAdminState extends State<SigninPageAdmin> {
             .collection("admins")
             .doc(userId)
             .get()
-            .then((snapshot) {
+            .then((snapshot) async {
           if (snapshot["role"] == "admin") {
             Navigator.of(context).popUntil((route) => route.isFirst);
             Navigator.of(context)
@@ -59,10 +59,11 @@ class _SigninPageAdminState extends State<SigninPageAdmin> {
         });
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.message!)));
+            .showSnackBar(SnackBar(content: Text(e.toString())));
       } catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e as String)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                "YOU ARE TRYING TO ENTER INTO ADMIN WITH CHEF CREDENTIALS")));
       } finally {
         isloadingprovider.setLoading(false);
       }
