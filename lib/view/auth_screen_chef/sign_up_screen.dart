@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_kitchen_management_app/constants/color_constants.dart';
-import 'package:hotel_kitchen_management_app/controller/auth_controller/password_contolller.dart';
+import 'package:hotel_kitchen_management_app/controller/auth_controller/password_contoller.dart';
 import 'package:hotel_kitchen_management_app/controller/loading_controller.dart';
 import 'package:hotel_kitchen_management_app/utils/custom_sizedbox.dart';
 import 'package:hotel_kitchen_management_app/widgets/auth_widgets/custom_button.dart';

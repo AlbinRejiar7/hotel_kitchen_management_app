@@ -3,11 +3,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hotel_kitchen_management_app/controller/auth_controller/password_contolller.dart';
+import 'package:hotel_kitchen_management_app/controller/auth_controller/password_contoller.dart';
 import 'package:hotel_kitchen_management_app/controller/inventory_controller.dart';
 import 'package:hotel_kitchen_management_app/controller/loading_controller.dart';
 import 'package:hotel_kitchen_management_app/controller/order_controller.dart';
-import 'package:hotel_kitchen_management_app/firebase_push_notifcation.dart';
+import 'package:hotel_kitchen_management_app/firebase_api.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -18,7 +18,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseApi().initNotifcations();
+  await FirebaseApiService().initNotifications();
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => PasswordProvider()),
