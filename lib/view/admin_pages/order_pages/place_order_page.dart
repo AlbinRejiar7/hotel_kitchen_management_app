@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hotel_kitchen_management_app/constants/color_constants.dart';
 import 'package:hotel_kitchen_management_app/utils/custom_sizedbox.dart';
 import 'package:hotel_kitchen_management_app/widgets/loading_widget.dart';
@@ -20,13 +22,47 @@ class ItemOrderPage extends StatefulWidget {
 }
 
 class _ItemOrderPageState extends State<ItemOrderPage> {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   final TextEditingController dishNameContoller = TextEditingController();
   final TextEditingController qunatityController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    initInfo();
+  }
+
+  initInfo() {
+    var andriodInit =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettings = InitializationSettings(android: andriodInit);
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      print("..........onMessage.........");
+      BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
+        message.notification!.body.toString(),
+        htmlFormatBigText: true,
+      );
+      AndroidNotificationDetails androidNotificationDetails =
+          AndroidNotificationDetails('pushnotification', "pushnotification",
+              importance: Importance.max,
+              styleInformation: bigTextStyleInformation,
+              priority: Priority.max,
+              playSound: false);
+      NotificationDetails platformchannelspecific =
+          NotificationDetails(android: androidNotificationDetails);
+      await flutterLocalNotificationsPlugin.show(0, message.notification?.title,
+          message.notification?.body, platformchannelspecific,
+          payload: message.data['body']);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var adminDeviceToken =
-        'dZv2ug14R6iEY0nDkED3Iv:APA91bHsRJJpAQhGarOwGgvOi5CH2X958Ugk8t-SmPC-dDHddbdOkhwWFx7hsTQ_Hrt-r3OyTx27G78yfeoZ8DAso2a3osTLG1_vFkN0Y3ftexqQ8nRhrN9YjSCZg6Ep3RZXHmzB-NMC';
     var loadingStateController = Provider.of<LoadingProvider>(context);
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +117,7 @@ class _ItemOrderPageState extends State<ItemOrderPage> {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Order has been placed")));
-                    sendOrderNotificationToAdmin(adminDeviceToken);
+                    await sendNotificationToToken();
                     dishNameContoller.clear();
                     qunatityController.clear();
                   } on FirebaseException catch (error) {
@@ -114,27 +150,42 @@ class _ItemOrderPageState extends State<ItemOrderPage> {
     super.dispose();
   }
 
-  void sendOrderNotificationToAdmin(String adminDeviceToken) async {
-    final String serverKey = '656081326376';
+  Future<void> sendNotificationToToken() async {
+    const String serverKey =
+        'AAAAmMF-kSg:APA91bEsyP-zEL79p408ztUJRJDIsZ39sDh1pqzYkZQj75ey6gxzz4iSV0U6bXmNTjltE73J60sL3nuuijfm3jFrPfvmgtwoK_TY6oMO6MRE06htVI5W8U2d_FGMiSKvPXM62m7GdrD0';
+    const String adminDeviceToken =
+        'f8GKaQJPQtqUreSmAGWJ8M:APA91bHhrOAgjKzmLeTPvBhjEGxBn-6WOgpksGpMxp2OnWUJadLr4rXrYejbT9rfO0xoNgZbGgy3T2uyMkDOIYH_x1vEACK7J1LUVNmK_0n5_cphRAG-QQmcaOxXL1qTRUjuV-NasY3O';
+
     final url = Uri.parse('https://fcm.googleapis.com/fcm/send');
 
-    final Map<String, dynamic> data = {
-      'notification': {
-        'title': 'New Order Received',
-        'body': 'Check your admin panel for details.',
-      },
-      'to': adminDeviceToken,
-    };
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'key=$serverKey',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'priority': 'high',
+          'data': <String, dynamic>{
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'status': 'done',
+            'body': 'Food orderd by customer',
+            'title': 'New Order',
+          },
+          'notification': <String, dynamic>{
+            'title': 'New Order',
+            'body': 'Food orderd by customer',
+            'android_channel_id': 'default_channel_id',
+          },
+          'to': adminDeviceToken,
+        }),
+      );
 
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'key=$serverKey',
-      },
-      body: json.encode(data),
-    );
-
-    print('FCM Response: ${response.body}');
+      print('FCM Response Status Code: ${response.statusCode}');
+      print('FCM Response Body: ${response.body}');
+    } catch (e) {
+      print('FCM Error: $e');
+    }
   }
 }

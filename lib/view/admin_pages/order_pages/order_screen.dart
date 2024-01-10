@@ -35,7 +35,6 @@ class _OrderPageState extends State<OrderPage> {
 
   Future getMobileDirectory() async {
     if (Platform.isAndroid) {
-      // Use path_provider for Android's external storage
       final directory = await getExternalStorageDirectory();
       return directory?.path != null ? directory : null;
     }
@@ -51,7 +50,6 @@ class _OrderPageState extends State<OrderPage> {
       build: (context) {
         return pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
-          //  pw.Text(name, style: pw.TextStyle(font: helveticaUnicode)),
           children: [
             pw.Text('Order List',
                 style:
